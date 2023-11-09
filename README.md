@@ -22,7 +22,7 @@ These instructions will help you set up the project on your local machine for de
 ### Prerequisites
 
 - Node.js and npm installed on your machine
-- MongoDB database (local or remote) for data storage
+- Firebase database (local or remote) for data storage
 - GitHub repository for the project (e.g., [AssistIt GitHub Repository](https://github.com/HafeefaPC/AssistIt))
 
 ### Installation
