@@ -23,12 +23,18 @@ const Navbar = () => {
         </Link>
       </ul>
       <div className="flex gap-4">
+        <Link to="/details">
+          <button className="w-[5rem] bg-[#00df9a] rounded p-2">Details</button>
+          </Link>
         <Link to="/signin">
           <button className="w-[5rem] bg-[#00df9a] rounded p-2">SignIn</button>
         </Link>
         <Link to="/signup">
           <button className="w-[5rem] bg-[#00df9a] rounded p-2">SignUp</button>
         </Link>
+        
+
+
       </div>
     </div>
   );

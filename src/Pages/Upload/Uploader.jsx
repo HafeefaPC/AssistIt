@@ -1,31 +1,34 @@
-import { useEffect, useState } from "react";
-import "./Uploader.css";
-import { MdCloudUpload, MdDelete } from "react-icons/md";
-import { AiFillFileImage } from "react-icons/ai";
-import { storage } from "../../firebase"; // Import storage functions
+// Import necessary dependencies
+import { useEffect, useState } from 'react';
+import './Uploader.css';
+import { MdCloudUpload, MdDelete } from 'react-icons/md';
+import { AiFillFileImage } from 'react-icons/ai';
+import { storage } from '../../firebase'; // Import storage functions
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'; // Import storage functions
+import { ref as dbRef, push, set } from 'firebase/database';
+import { db } from '../../firebase'; // Include the Realtime Database imports
 
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Import storage functions
-import { ref as dbRef, push } from "firebase/database";
-import { db } from "../../firebase"; // Include the Realtime Database imports
-
+// Define the Uploader component
 function Uploader() {
   const [image, setImage] = useState(null);
-  const [fileName, setFileName] = useState("No selected file");
+  const [fileName, setFileName] = useState('No selected file');
 
   useEffect(() => {
     const uploadFile = () => {
       if (image) {
-        const name = new Date() + "-" + fileName;
+        const name = new Date() + '-' + fileName;
         const storageRef = ref(storage, `images/${name}`);
         const uploadTask = uploadBytesResumable(storageRef, image);
 
-        uploadTask.on("state_changed", null, null, async () => {
+        uploadTask.on('state_changed', null, null, async () => {
           // The image has been uploaded, get the download URL
           const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
 
           // Now, store the image URL in the Realtime Database
-          const dbImageRef = push(dbRef(db, "images"));
-          dbImageRef.set(imageUrl);
+          const dbImageRef = push(dbRef(db, 'images')); // Using push to generate a unique key
+          
+          // Use set directly on the Reference to store the data
+          set(dbImageRef, imageUrl);
         });
       }
     };
@@ -38,10 +41,9 @@ function Uploader() {
 
   return (
     <main>
-      
       <form
         action=""
-        onClick={() => document.querySelector(".input-field").click()}
+        onClick={() => document.querySelector('.input-field').click()}
         className="hello"
       >
         <input
@@ -77,7 +79,7 @@ function Uploader() {
           {fileName} -
           <MdDelete
             onClick={() => {
-              setFileName("No selected file");
+              setFileName('No selected file');
               setImage(null);
             }}
           />
@@ -87,4 +89,5 @@ function Uploader() {
   );
 }
 
+// Export the Uploader component
 export default Uploader;

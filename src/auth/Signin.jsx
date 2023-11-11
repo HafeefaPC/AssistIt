@@ -4,12 +4,12 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
+const SignIn = ({ onSignIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const[error,setError]=useState(false);
+  const [error, setError] = useState(false);
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const signIn = (e) => {
     e.preventDefault();
@@ -17,7 +17,8 @@ const navigate = useNavigate();
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        navigate("/")
+        onSignIn(user.uid); // Pass the user ID to the parent component
+        navigate("/");
       })
       .catch((error) => {
         setError(true);
